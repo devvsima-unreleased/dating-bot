@@ -1,3 +1,5 @@
+from .dating import DatingGoalModel, DatingProfileModel
+from .location import LocationModel
 from .match import MatchModel
-from .profile import ProfileModel
+from .service import ServiceModel, ServiceProfileModel
 from .user import UserModel

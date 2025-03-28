@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from utils.logging import logger
 
-from ..models.profile import ProfileModel
+from ..models.dating import ProfileModel
 
 
 class Profile:

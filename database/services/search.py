@@ -13,7 +13,7 @@ from data.config import (
     RADIUS,
     RADIUS_STEP,
 )
-from database.models.profile import ProfileModel
+from database.models.dating import ProfileModel
 
 
 async def search_profiles(

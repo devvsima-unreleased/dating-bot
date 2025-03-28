@@ -1,7 +1,7 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from database.models.profile import ProfileModel
+from database.models.dating import ProfileModel
 from loader import _
 
 

@@ -1,6 +1,6 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 
-from database.models.profile import ProfileModel
+from database.models.dating import ProfileModel
 from loader import _
 
 from .kb_generator import simple_kb_generator as kb_gen

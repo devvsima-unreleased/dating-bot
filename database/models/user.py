@@ -3,28 +3,31 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import BaseModel
 
-ROLES = {
-    0: "banned",
-    1: "user",
-    2: "sponsor",
-    3: "moderator",
-    4: "admin",
-    5: "owner",
-}  # not currently in use
-
 
 class UserModel(BaseModel):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    username: Mapped[str] = mapped_column(String(70), nullable=True)
-    language: Mapped[str] = mapped_column(String(10), default="en")
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    username: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
+    language: Mapped[str] = mapped_column(String(10), nullable=False, default="en")
+    created_at: Mapped[str] = mapped_column(String(50), nullable=False)
     referral: Mapped[int] = mapped_column(Integer, default=0)
     is_banned: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    profile: Mapped["ProfileModel"] = relationship(  # type: ignore
-        "ProfileModel", uselist=False, back_populates="user"
+    # Связь с профилем знакомств
+    dating_profile: Mapped["DatingProfileModel"] = relationship(  # type: ignore
+        "DatingProfileModel", back_populates="user", uselist=False, cascade="all, delete-orphan"
     )
-    service: Mapped["ServiceModel"] = relationship(  # type: ignore
-        "ServiceModel", uselist=False, back_populates="user"
+
+    # Связь с профилем услуг
+    service_profile: Mapped["ServiceProfileModel"] = relationship(  # type: ignore
+        "ServiceProfileModel", back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
+
+    # Связь с матчами (отправленные и полученные)
+    sent_matches: Mapped[list["MatchModel"]] = relationship(  # type: ignore
+        "MatchModel", foreign_keys="[MatchModel.sender_id]", back_populates="sender"
+    )
+    received_matches: Mapped[list["MatchModel"]] = relationship(  # type: ignore
+        "MatchModel", foreign_keys="[MatchModel.receiver_id]", back_populates="receiver"
     )
