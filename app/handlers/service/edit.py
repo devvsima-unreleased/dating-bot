@@ -9,7 +9,7 @@ from database.models import UserModel
 from database.services.services import Services
 
 
-@services_router.message(F.text == "🖼", StateFilter(None))
+@services_router.message(F.text == "🖼💰", StateFilter(None))
 async def _edit_service_photo_command(message: types.Message, state: FSMContext):
     """Редактирует фотографию профиля услуги"""
     await state.set_state(ServiceProfileEdit.photo)
@@ -26,7 +26,7 @@ async def _update_service_photo(
     await message.reply("✅ Фотография профиля услуги обновлена!")
 
 
-@services_router.message(F.text == "✍️", StateFilter(None))
+@services_router.message(F.text == "✍️💰", StateFilter(None))
 async def _edit_service_description_command(message: types.Message, state: FSMContext):
     """Редактирует описание профиля услуги"""
     await state.set_state(ServiceProfileEdit.description)

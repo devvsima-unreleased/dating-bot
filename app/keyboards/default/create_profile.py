@@ -1,5 +1,6 @@
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from sqlalchemy import select
 
 from database.models.profile import ProfileModel
 from loader import _
@@ -54,6 +55,7 @@ def location_kb(profile: ProfileModel | None):
 
 
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models.location import LocationModel
@@ -61,17 +63,16 @@ from database.models.location import LocationModel
 
 async def service_location_kb(session: AsyncSession) -> ReplyKeyboardMarkup:
     """Создает клавиатуру с доступными локациями"""
-    # Получаем список локаций из базы данных
-    locations = await session.execute(
-        session.query(LocationModel.name).order_by(LocationModel.name)
-    )
-    location_names = [row[0] for row in locations.fetchall()]
+    # Выполняем асинхронный запрос для получения списка локаций
+    result = await session.execute(select(LocationModel.name).order_by(LocationModel.name))
+    location_names = [row[0] for row in result.fetchall()]
 
     # Создаем кнопки для каждой локации
-    buttons = [KeyboardButton(text=location) for location in location_names]
+    buttons = [
+        [KeyboardButton(text=location)] for location in location_names
+    ]  # Список списков кнопок
 
     # Создаем клавиатуру
-    keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*buttons)
+    keyboard = ReplyKeyboardMarkup(keyboard=buttons, resize_keyboard=True)
 
     return keyboard

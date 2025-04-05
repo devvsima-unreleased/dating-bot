@@ -7,6 +7,7 @@ from app.keyboards.inline.admin import block_user_ikb
 from app.keyboards.inline.archive import check_archive_ikb
 from data.config import MODERATOR_GROUP
 from database.models import ProfileModel, UserModel
+from database.models.service_profile import ServiceProfileModel
 from database.services import User
 from loader import bot
 from utils.logging import logger
@@ -66,6 +67,24 @@ async def send_profile(chat_id: int, profile: ProfileModel) -> None:
         chat_id=chat_id,
         photo=profile.photo,
         caption=f"{profile.name}, {profile.age}, {profile.city}\n{profile.description}",
+        parse_mode=None,
+    )
+
+
+async def send_service_profile(chat_id: int, profile: ServiceProfileModel) -> None:
+    """Отправляет пользователю переданный в функцию профиль услуги"""
+    location_name = profile.location.name if profile.location else "Не указано"
+    instagram_link = f"\nInstagram: @{profile.instagram}" if profile.instagram else ""
+
+    await bot.send_photo(
+        chat_id=chat_id,
+        photo=profile.photo,
+        caption=(
+            f"{profile.name}, {profile.age}\n"
+            f"Локация: {location_name}\n"
+            f"{profile.description or 'Описание отсутствует'}"
+            f"{instagram_link}"
+        ),
         parse_mode=None,
     )
 

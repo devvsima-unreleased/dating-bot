@@ -1,6 +1,7 @@
 from aiogram import F, types
 from aiogram.filters.state import StateFilter
 from aiogram.fsm.context import FSMContext
+from sqlalchemy import select
 
 from app.handlers.message_text import user_message_text as umt
 from app.keyboards.default.create_profile import service_location_kb
@@ -35,17 +36,20 @@ async def _service_name(message: types.Message, state: FSMContext):
 
 
 @services_router.message(StateFilter(ServiceProfileCreate.age), F.text)
-async def _service_age(message: types.Message, state: FSMContext):
+async def _service_age(message: types.Message, state: FSMContext, session):
     """Сохраняет возраст для профиля услуги"""
     await state.update_data(age=int(message.text))
-    await message.reply(umt.CITY, reply_markup=service_location_kb())
+    await message.reply(umt.CITY, reply_markup=await service_location_kb(session))
     await state.set_state(ServiceProfileCreate.location)
 
 
 @services_router.message(StateFilter(ServiceProfileCreate.location), F.text)
 async def _service_location(message: types.Message, state: FSMContext, session):
     """Сохраняет локацию для профиля услуги"""
-    location = await session.get(LocationModel, message.text)
+    # Выполняем запрос для поиска локации по названию
+    result = await session.execute(select(LocationModel).where(LocationModel.name == message.text))
+    location = result.scalar_one_or_none()
+
     if not location:
         await message.reply(umt.INVALID_CITY_RESPONSE)
         return
