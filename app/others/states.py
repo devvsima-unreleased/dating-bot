@@ -26,3 +26,16 @@ class Search(StatesGroup):
 
 class Mailing(StatesGroup):
     message = State()
+
+
+class ServiceProfileCreate(StatesGroup):
+    photo = State()
+    name = State()
+    age = State()
+    location = State()
+    description = State()
+
+
+class ServiceProfileEdit(StatesGroup):
+    photo = State()
+    description = State()
