@@ -11,7 +11,4 @@ class LocationModel(BaseModel, AsyncAttrs):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
 
-    # Обратная связь с ServiceProfileModel
-    service_profiles: Mapped[list["ServiceProfileModel"]] = relationship(
-        "ServiceProfileModel", back_populates="location"
-    )
+    offers: Mapped[list["OfferModel"]] = relationship("OfferModel", back_populates="location")  # type: ignore

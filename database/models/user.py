@@ -22,9 +22,7 @@ class UserModel(BaseModel):
     referral: Mapped[int] = mapped_column(Integer, default=0)
     is_banned: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    profile: Mapped["ProfileModel"] = relationship(
+    profile: Mapped["ProfileModel"] = relationship(  # type: ignore
         "ProfileModel", uselist=False, back_populates="user"
     )
-    service_profile: Mapped["ServiceProfileModel"] = relationship(
-        "ServiceProfileModel", uselist=False, back_populates="user"
-    )
+    offer: Mapped["OfferModel"] = relationship("OfferModel", back_populates="user")  # type: ignore

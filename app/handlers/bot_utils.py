@@ -7,7 +7,7 @@ from app.keyboards.inline.admin import block_user_ikb
 from app.keyboards.inline.archive import check_archive_ikb
 from data.config import MODERATOR_GROUP
 from database.models import ProfileModel, UserModel
-from database.models.service_profile import ServiceProfileModel
+from database.models.offer import OfferModel
 from database.services import User
 from loader import bot
 from utils.logging import logger
@@ -71,7 +71,7 @@ async def send_profile(chat_id: int, profile: ProfileModel) -> None:
     )
 
 
-async def send_service_profile(chat_id: int, profile: ServiceProfileModel) -> None:
+async def send_service_profile(chat_id: int, profile: OfferModel) -> None:
     """Отправляет пользователю переданный в функцию профиль услуги"""
     location_name = profile.location.name if profile.location else "Не указано"
     instagram_link = f"\nInstagram: @{profile.instagram}" if profile.instagram else ""
