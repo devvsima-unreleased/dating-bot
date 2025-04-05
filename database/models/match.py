@@ -5,7 +5,7 @@ from .base import BaseModel
 
 
 class MatchModel(BaseModel):
-    __tablename__ = "matchs"
+    __tablename__ = "matches"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     sender_id: Mapped[int] = mapped_column(ForeignKey("users.id"))

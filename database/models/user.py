@@ -25,3 +25,6 @@ class UserModel(BaseModel):
     profile: Mapped["ProfileModel"] = relationship(
         "ProfileModel", uselist=False, back_populates="user"
     )
+    service_profile: Mapped["ServiceProfileModel"] = relationship(
+        "ServiceProfileModel", uselist=False, back_populates="user"
+    )
