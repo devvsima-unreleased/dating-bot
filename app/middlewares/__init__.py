@@ -1,7 +1,7 @@
 from aiogram import Dispatcher
 
 from app.middlewares.i18n import i18n_middleware
-from app.routers import admin_router, common_router, dating_router, services_router, voide_router
+from app.routers import admin_router, common_router, dating_router, offers_router, voide_router
 from database.connect import async_session
 
 from .admin import AdminMiddleware
@@ -9,6 +9,7 @@ from .common import CommonMiddleware
 from .database import DatabaseMiddleware
 from .dating import DatingMiddleware
 from .log import LoggingMiddleware
+from .offer import OfferMiddleware
 from .voide import VoideMiddleware
 
 
@@ -27,11 +28,11 @@ def setup_middlewares(dp: Dispatcher) -> None:
     dating_router.callback_query.middleware(DatingMiddleware())
     dating_router.message.middleware(i18n_middleware)
 
-    services_router.message.middleware(LoggingMiddleware())
-    services_router.callback_query.middleware(LoggingMiddleware())
-    services_router.message.middleware(DatingMiddleware())
-    services_router.callback_query.middleware(DatingMiddleware())
-    services_router.message.middleware(i18n_middleware)
+    offers_router.message.middleware(LoggingMiddleware())
+    offers_router.callback_query.middleware(LoggingMiddleware())
+    offers_router.message.middleware(OfferMiddleware())
+    offers_router.callback_query.middleware(OfferMiddleware())
+    offers_router.message.middleware(i18n_middleware)
 
     admin_router.message.middleware(LoggingMiddleware())
     admin_router.callback_query.middleware(LoggingMiddleware())

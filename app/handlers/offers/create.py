@@ -6,20 +6,20 @@ from sqlalchemy import select
 from app.handlers.message_text import user_message_text as umt
 from app.keyboards.default.create_profile import service_location_kb
 from app.others.states import ServiceProfileCreate
-from app.routers import services_router
+from app.routers import offers_router
 from database.models import UserModel
 from database.models.location import LocationModel
 from database.services.services import Services
 
 
-@services_router.message(F.text == "🔄💰", StateFilter(None))
+@offers_router.message(F.text == "🔄💰", StateFilter(None))
 async def _create_service_profile_command(message: types.Message, state: FSMContext):
     """Запускает процесс создания профиля услуги"""
     await message.answer(umt.PHOTO)
     await state.set_state(ServiceProfileCreate.photo)
 
 
-@services_router.message(StateFilter(ServiceProfileCreate.photo), F.photo)
+@offers_router.message(StateFilter(ServiceProfileCreate.photo), F.photo)
 async def _service_photo(message: types.Message, state: FSMContext):
     """Сохраняет фото для профиля услуги"""
     await state.update_data(photo=message.photo[0].file_id)
@@ -27,7 +27,7 @@ async def _service_photo(message: types.Message, state: FSMContext):
     await state.set_state(ServiceProfileCreate.name)
 
 
-@services_router.message(StateFilter(ServiceProfileCreate.name), F.text)
+@offers_router.message(StateFilter(ServiceProfileCreate.name), F.text)
 async def _service_name(message: types.Message, state: FSMContext):
     """Сохраняет имя для профиля услуги"""
     await state.update_data(name=message.text)
@@ -35,7 +35,7 @@ async def _service_name(message: types.Message, state: FSMContext):
     await state.set_state(ServiceProfileCreate.age)
 
 
-@services_router.message(StateFilter(ServiceProfileCreate.age), F.text)
+@offers_router.message(StateFilter(ServiceProfileCreate.age), F.text)
 async def _service_age(message: types.Message, state: FSMContext, session):
     """Сохраняет возраст для профиля услуги"""
     await state.update_data(age=int(message.text))
@@ -43,7 +43,7 @@ async def _service_age(message: types.Message, state: FSMContext, session):
     await state.set_state(ServiceProfileCreate.location)
 
 
-@services_router.message(StateFilter(ServiceProfileCreate.location), F.text)
+@offers_router.message(StateFilter(ServiceProfileCreate.location), F.text)
 async def _service_location(message: types.Message, state: FSMContext, session):
     """Сохраняет локацию для профиля услуги"""
     # Выполняем запрос для поиска локации по названию
@@ -59,7 +59,7 @@ async def _service_location(message: types.Message, state: FSMContext, session):
     await state.set_state(ServiceProfileCreate.description)
 
 
-@services_router.message(StateFilter(ServiceProfileCreate.description), F.text)
+@offers_router.message(StateFilter(ServiceProfileCreate.description), F.text)
 async def _service_description(message: types.Message, state: FSMContext, user: UserModel, session):
     """Сохраняет описание и завершает создание профиля услуги"""
     data = await state.get_data()

@@ -6,8 +6,8 @@ from utils.logging import logger
 from .admin import admin_router
 from .common import common_router
 from .dating import dating_router
-from .other import voide_router
-from .service import services_router
+from .offers import offers_router
+from .voide import voide_router
 
 
 def setup_handlers(dp: Dispatcher) -> None:
@@ -16,4 +16,4 @@ def setup_handlers(dp: Dispatcher) -> None:
 
     dp.errors.register(_error)
 
-    dp.include_routers(common_router, dating_router, services_router, admin_router, voide_router)
+    dp.include_routers(common_router, dating_router, offers_router, admin_router, voide_router)

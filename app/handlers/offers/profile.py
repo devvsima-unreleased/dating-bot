@@ -5,12 +5,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from app.handlers.bot_utils import send_service_profile
-from app.routers import services_router
+from app.routers import offers_router
 from database.models import UserModel
 from database.services.services import Services
 
 
-@services_router.message(F.text == "👤💰", StateFilter(None))
+@offers_router.message(F.text == "👤💰", StateFilter(None))
 async def _view_service_profile_command(
     message: types.Message, session: AsyncSession, user: UserModel
 ):
