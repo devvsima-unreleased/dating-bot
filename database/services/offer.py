@@ -6,7 +6,7 @@ from utils.logging import logger
 from ..models.offer import OfferModel
 
 
-class Services:
+class Offers:
     @staticmethod
     async def get_service_profile(session: AsyncSession, user_id: int):
         """Возвращает профиль сервиса пользователя"""

@@ -158,6 +158,10 @@ class UserMessageText:
         return _("✅ Жалоба отправлена на рассмотрение!")
 
     @property
+    def SERVICE_TYPES(self):
+        return _("Введите типы услуг через запятую (например, Маникюр, Стрижка, Окрашивание).")
+
+    @property
     def RESON_OF_REPORTING(self):
         return _("""
 Укажи причину жалобы:

@@ -7,7 +7,7 @@ from sqlalchemy.orm import joinedload
 from app.handlers.bot_utils import send_service_profile
 from app.routers import offers_router
 from database.models import UserModel
-from database.services.services import Services
+from database.services.offer import Offers
 
 
 @offers_router.message(F.text == "👤💰", StateFilter(None))

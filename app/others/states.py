@@ -28,14 +28,15 @@ class Mailing(StatesGroup):
     message = State()
 
 
-class ServiceProfileCreate(StatesGroup):
+class OfferCreate(StatesGroup):
     photo = State()
     name = State()
     age = State()
     location = State()
+    service_types = State()
     description = State()
 
 
-class ServiceProfileEdit(StatesGroup):
+class OfferEdit(StatesGroup):
     photo = State()
     description = State()
