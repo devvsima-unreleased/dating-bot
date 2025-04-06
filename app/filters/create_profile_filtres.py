@@ -51,12 +51,7 @@ leave_previous_tuple = (
 
 start_command_tuple = (
     "/create",
-    "Создать анкету",  # Русский
-    "Create a profile",  # Английский
-    "Створити анкету",  # Украинский
-    "Créer un profil",  # Французский
-    "Crear un perfil",  # Испанский
-    "Utwórz profil",  # Польский
+    "Создать анкету для знакомств",
 )
 
 

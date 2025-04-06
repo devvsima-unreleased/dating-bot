@@ -7,18 +7,18 @@ offer_service_types = Table(
     "offer_service_types",
     BaseModel.metadata,
     Column("offer_id", ForeignKey("offers.user_id", ondelete="CASCADE"), primary_key=True),
-    Column("service_type_id", ForeignKey("service_types.id", ondelete="CASCADE"), primary_key=True),
+    Column("offer_type_id", ForeignKey("offer_types.id", ondelete="CASCADE"), primary_key=True),
 )
 
 
-class ServiceTypeModel(BaseModel):
-    __tablename__ = "service_types"
+class OfferTypeModel(BaseModel):
+    __tablename__ = "offer_types"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
 
     offers: Mapped[list["OfferModel"]] = relationship(
-        "OfferModel", secondary="offer_service_types", back_populates="service_types"
+        "OfferModel", secondary="offer_service_types", back_populates="offer_types"
     )
 
 
@@ -44,6 +44,6 @@ class OfferModel(BaseModel):
     location: Mapped["LocationModel"] = relationship("LocationModel", back_populates="offers")  # type: ignore
 
     # Связь с ServiceTypeModel через offer_service_types
-    service_types: Mapped[list["ServiceTypeModel"]] = relationship(
-        "ServiceTypeModel", secondary=offer_service_types, back_populates="offers"
+    offer_types: Mapped[list["OfferTypeModel"]] = relationship(
+        "OfferTypeModel", secondary=offer_service_types, back_populates="offers"
     )

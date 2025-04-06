@@ -11,7 +11,8 @@ def start_kb() -> ReplyKeyboardMarkup:
         resize_keyboard=True,
         keyboard=[
             [
-                KeyboardButton(text=_("Создать анкету")),
+                KeyboardButton(text=_("Создать анкету для знакомств")),
+                KeyboardButton(text=_("Создать анкету для улсуг")),
             ],
         ],
     )

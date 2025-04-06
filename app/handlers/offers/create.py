@@ -13,6 +13,7 @@ from database.models.location import LocationModel
 from database.models.offer import OfferModel, ServiceTypeModel
 
 
+@offers_router.message(F.text == "Создать анкету для улсуг", StateFilter(None))
 @offers_router.message(F.text == "🔄💰", StateFilter(None))
 async def _create_offer_command(message: types.Message, state: FSMContext):
     """Запускает процесс создания анкеты услуги"""
