@@ -11,7 +11,7 @@ from database.models import UserModel
 from database.services import Match, Profile, User
 
 from ..common.cancel import cancel_command
-from .profile import send_profile
+from .menu import send_profile
 
 
 @dating_router.message(F.text == "🗄", StateFilter("*"))

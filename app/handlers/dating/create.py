@@ -11,7 +11,7 @@ from app.routers import dating_router
 from database.models.user import UserModel
 from database.services import Profile
 
-from .profile import profile_command
+from .menu import profile_command
 
 
 # create profile

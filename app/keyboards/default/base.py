@@ -12,14 +12,28 @@ cancel_kb: ReplyKeyboardMarkup = kb_gen(
     ["/cancel"],
 )
 
-profile_kb: ReplyKeyboardMarkup = kb_gen(
-    ["🔄", "🖼", "✍️", "❌"],
-    ["🔍"],
+main_menu_kb: ReplyKeyboardMarkup = kb_gen(
+    ["💘", "💼"],
+    ["✉️"],
 )
 
-menu_kb: ReplyKeyboardMarkup = kb_gen(
-    ["🔍", "👤", "🗄"],
-    ["✉️"],
+dating_menu_kb: ReplyKeyboardMarkup = kb_gen(
+    ["🔍", "👤"],
+    ["🗄"],
+)
+
+dating_profile_kb: ReplyKeyboardMarkup = kb_gen(
+    ["🔄", "🖼", "✍️", "❌"],
+    ["💘"],
+)
+
+offer_menu_kb: ReplyKeyboardMarkup = kb_gen(
+    ["🔎", "💰"],
+    ["💠"],
+)
+offer_profile_kb: ReplyKeyboardMarkup = kb_gen(
+    ["🔄", "🖼", "✍️", "❌"],
+    ["💼"],
 )
 
 search_kb: ReplyKeyboardMarkup = kb_gen(

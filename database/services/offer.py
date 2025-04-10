@@ -63,8 +63,8 @@ class Offers:
         instagram: str | None,
     ):
         """Создает профиль сервиса пользователя, если профиль есть - удаляет его"""
-        if await Services.get_service_profile(session, user_id):
-            await Services.delete_service_profile(session, user_id)
+        if await Offers.get_service_profile(session, user_id):
+            await Offers.delete_service_profile(session, user_id)
 
         service_profile = OfferModel(
             user_id=user_id,

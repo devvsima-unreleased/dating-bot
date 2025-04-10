@@ -2,7 +2,7 @@ import html
 import re
 
 from app.handlers.message_text import user_message_text as umt
-from app.keyboards.default.base import menu_kb
+from app.keyboards.default.base import main_menu_kb
 from app.keyboards.inline.admin import block_user_ikb
 from app.keyboards.inline.archive import check_archive_ikb
 from data.config import MODERATOR_GROUP
@@ -33,7 +33,7 @@ async def menu(chat_id: int) -> None:
     await bot.send_message(
         chat_id=chat_id,
         text=umt.MENU,
-        reply_markup=menu_kb,
+        reply_markup=main_menu_kb,
     )
 
 
