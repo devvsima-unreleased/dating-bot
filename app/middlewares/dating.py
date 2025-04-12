@@ -11,7 +11,7 @@ class DatingMiddleware(BaseMiddleware):
         self, handler: Callable, message: Message | CallbackQuery, data: dict
     ) -> Any:
         session = data["session"]
-        user, is_create = await User.get_or_create(
+        user, is_create = await User.get_or_create_dating(
             session,
             user_id=message.from_user.id,
             username=message.from_user.username,

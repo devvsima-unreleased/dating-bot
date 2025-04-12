@@ -5,12 +5,13 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from sqlalchemy import select
 
 from app.handlers.message_text import user_message_text as umt
-from app.keyboards.default.create_profile import service_location_kb
+from app.keyboards.default.create_offer_profile import service_location_kb
 from app.others.states import OfferCreate
 from app.routers import offers_router
 from database.models import UserModel
-from database.models.location import LocationModel
-from database.models.offer import OfferModel, OfferTypeModel
+from database.models.offer import OfferTypeModel
+from database.services.location import Location
+from database.services.offer import Offers
 
 
 @offers_router.message(F.text == "Создать анкету для улсуг", StateFilter(None))
@@ -48,16 +49,13 @@ async def _offer_age(message: types.Message, state: FSMContext, session):
 @offers_router.message(StateFilter(OfferCreate.location), F.text)
 async def _offer_location(message: types.Message, state: FSMContext, session):
     """Сохраняет локацию для анкеты услуги"""
-    result = await session.execute(select(LocationModel).where(LocationModel.name == message.text))
-    location = result.scalar_one_or_none()
 
-    if not location:
+    if location := await Location.is_this_location(session, message.text):
+        await state.update_data(location_id=location.id)
+        await message.reply(umt.SERVICE_TYPES)
+        await state.set_state(OfferCreate.service_types)
+    else:
         await message.reply(umt.INVALID_CITY_RESPONSE)
-        return
-
-    await state.update_data(location_id=location.id)
-    await message.reply(umt.SERVICE_TYPES)
-    await state.set_state(OfferCreate.service_types)
 
 
 @offers_router.message(StateFilter(OfferCreate.service_types), F.text)
@@ -81,8 +79,8 @@ async def _offer_description(message: types.Message, state: FSMContext, user: Us
     )
     selected_service_types = result.scalars().all()
 
-    # Создаем объект OfferModel
-    offer = OfferModel(
+    await Offers.create_service_profile(
+        session=session,
         user_id=user.id,
         name=data["name"],
         location_id=data["location_id"],
@@ -90,8 +88,7 @@ async def _offer_description(message: types.Message, state: FSMContext, user: Us
         description=message.text,
         offer_types=selected_service_types,  # Устанавливаем связь с типами услуг
     )
-    session.add(offer)
-    await session.commit()
+
     await state.clear()
     await message.reply("✅ Анкета услуги успешно создана!")
 

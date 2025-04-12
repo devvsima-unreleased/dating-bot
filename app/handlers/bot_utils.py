@@ -73,14 +73,21 @@ async def send_profile(chat_id: int, profile: ProfileModel) -> None:
 
 async def send_service_profile(chat_id: int, profile: OfferModel) -> None:
     """Отправляет пользователю переданный в функцию профиль услуги"""
-    location_name = profile.location.name if profile.location else "Не указано"
+    location_name = "Не указано"
+    if profile.location:
+        location_name = profile.location.name or "Не указано"
+
     instagram_link = f"\nInstagram: @{profile.instagram}" if profile.instagram else ""
+
+    if not profile.photo:
+        await bot.send_message(chat_id, "❌ У профиля отсутствует фотография.")
+        return
 
     await bot.send_photo(
         chat_id=chat_id,
         photo=profile.photo,
         caption=(
-            f"{profile.name}, {profile.age}\n"
+            f"{profile.name or 'Без имени'},\n"
             f"Локация: {location_name}\n"
             f"{profile.description or 'Описание отсутствует'}"
             f"{instagram_link}"

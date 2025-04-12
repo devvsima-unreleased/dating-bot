@@ -32,7 +32,7 @@ offer_menu_kb: ReplyKeyboardMarkup = kb_gen(
     ["💠"],
 )
 offer_profile_kb: ReplyKeyboardMarkup = kb_gen(
-    ["🔄", "🖼", "✍️", "❌"],
+    ["🔃", "📸", "📝", "🔴"],
     ["💼"],
 )
 

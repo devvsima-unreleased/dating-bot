@@ -3,6 +3,7 @@ from aiogram.filters.state import StateFilter
 from aiogram.fsm.context import FSMContext
 
 from app.handlers.message_text import user_message_text as umt
+from app.handlers.offers.menu import _view_service_profile_command
 from app.others.states import OfferEdit
 from app.routers import offers_router
 from database.models import UserModel
@@ -21,9 +22,10 @@ async def _update_service_photo(
     message: types.Message, state: FSMContext, user: UserModel, session
 ):
     """Обновляет фотографию профиля услуги"""
-    await Offers.update_service_photo(session, user.service_profile, message.photo[0].file_id)
+    await Offers.update_service_photo(session, user.offer, message.photo[0].file_id)
     await state.clear()
     await message.reply("✅ Фотография профиля услуги обновлена!")
+    await _view_service_profile_command(message, user)
 
 
 @offers_router.message(F.text == "📝", StateFilter(None))
@@ -38,15 +40,16 @@ async def _update_service_description(
     message: types.Message, state: FSMContext, user: UserModel, session
 ):
     """Обновляет описание профиля услуги"""
-    await Offers.update_service_description(session, user.service_profile, message.text)
+    await Offers.update_service_description(session, user.offer, message.text)
     await state.clear()
     await message.reply("✅ Описание профиля услуги обновлено!")
+    await _view_service_profile_command(message, user)
 
 
-@offers_router.message(F.text == "❌", StateFilter(None))
+@offers_router.message(F.text == "🔴", StateFilter(None))
 async def _disable_service_profile_command(
     message: types.Message, state: FSMContext, user: UserModel, session
 ) -> None:
     """Отключает профиль услуги, делая его неактивным"""
-    await Offers.update_service_isactive(session, user.service_profile, False)
+    await Offers.update_service_isactive(session, user.offer, False)
     await message.answer("❌ Профиль услуги отключен!")

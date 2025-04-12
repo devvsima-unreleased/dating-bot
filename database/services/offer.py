@@ -58,7 +58,6 @@ class Offers:
         name: str,
         location_id: int | None,
         photo: str,
-        age: int,
         description: str,
         instagram: str | None,
     ):
@@ -71,7 +70,6 @@ class Offers:
             name=name,
             location_id=location_id,
             photo=photo,
-            age=age,
             description=description,
             instagram=instagram,
         )
