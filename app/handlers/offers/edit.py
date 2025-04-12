@@ -11,7 +11,7 @@ from database.services.offer import Offers
 
 
 @offers_router.message(F.text == "📸", StateFilter(None))
-async def _edit_service_photo_command(message: types.Message, state: FSMContext):
+async def _edit_service_photo_command(message: types.Message, state: FSMContext) -> None:
     """Редактирует фотографию профиля услуги"""
     await state.set_state(OfferEdit.photo)
     await message.reply(umt.PHOTO)
@@ -20,7 +20,7 @@ async def _edit_service_photo_command(message: types.Message, state: FSMContext)
 @offers_router.message(StateFilter(OfferEdit.photo), F.photo)
 async def _update_service_photo(
     message: types.Message, state: FSMContext, user: UserModel, session
-):
+) -> None:
     """Обновляет фотографию профиля услуги"""
     await Offers.update_service_photo(session, user.offer, message.photo[0].file_id)
     await state.clear()
@@ -29,7 +29,7 @@ async def _update_service_photo(
 
 
 @offers_router.message(F.text == "📝", StateFilter(None))
-async def _edit_service_description_command(message: types.Message, state: FSMContext):
+async def _edit_service_description_command(message: types.Message, state: FSMContext) -> None:
     """Редактирует описание профиля услуги"""
     await state.set_state(OfferEdit.description)
     await message.reply(umt.DESCRIPTION)
@@ -38,7 +38,7 @@ async def _edit_service_description_command(message: types.Message, state: FSMCo
 @offers_router.message(StateFilter(OfferEdit.description), F.text)
 async def _update_service_description(
     message: types.Message, state: FSMContext, user: UserModel, session
-):
+) -> None:
     """Обновляет описание профиля услуги"""
     await Offers.update_service_description(session, user.offer, message.text)
     await state.clear()
@@ -48,7 +48,7 @@ async def _update_service_description(
 
 @offers_router.message(F.text == "🔴", StateFilter(None))
 async def _disable_service_profile_command(
-    message: types.Message, state: FSMContext, user: UserModel, session
+    message: types.Message, user: UserModel, session
 ) -> None:
     """Отключает профиль услуги, делая его неактивным"""
     await Offers.update_service_isactive(session, user.offer, False)

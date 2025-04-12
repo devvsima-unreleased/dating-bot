@@ -59,7 +59,8 @@ class Offers:
         location_id: int | None,
         photo: str,
         description: str,
-        instagram: str | None,
+        offer_types,
+        instagram: str | None = None,
     ):
         """Создает профиль сервиса пользователя, если профиль есть - удаляет его"""
         if await Offers.get_service_profile(session, user_id):
@@ -72,6 +73,7 @@ class Offers:
             photo=photo,
             description=description,
             instagram=instagram,
+            offer_types=offer_types,  # Устанавливаем связь с типами услуг
         )
 
         session.add(service_profile)
