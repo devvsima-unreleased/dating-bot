@@ -40,3 +40,7 @@ class OfferCreate(StatesGroup):
 class OfferEdit(StatesGroup):
     photo = State()
     description = State()
+
+
+class ServiceSearch(StatesGroup):
+    search = State()

@@ -1,8 +1,7 @@
-from sqlalchemy import insert, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.models.location import LocationModel
-from utils.logging import logger
 
 from ..models.match import MatchModel
 

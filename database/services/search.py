@@ -13,7 +13,9 @@ from data.config import (
     RADIUS,
     RADIUS_STEP,
 )
+from database.models.offer import OfferModel
 from database.models.profile import ProfileModel
+from database.models.user import UserModel
 
 
 async def search_profiles(
@@ -88,3 +90,13 @@ async def search_profiles(
         f"{profile.user_id} начал поиск анкет, результат: {id_list}, радиус: {current_distance - RADIUS_STEP} км",
     )
     return id_list
+
+
+async def search_service_profiles(session: AsyncSession, user: UserModel) -> list[int]:
+    """Ищет профили услуг, соответствующие предпочтениям пользователя"""
+    result = await session.execute(
+        select(OfferModel.user_id)
+        .where(OfferModel.is_active == True)  # Только активные профили
+        .where(OfferModel.user_id != user.id)  # Исключаем свои услуги
+    )
+    return [row[0] for row in result.fetchall()]

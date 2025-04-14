@@ -1,5 +1,6 @@
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from utils.logging import logger
 
@@ -8,9 +9,14 @@ from ..models.offer import OfferModel
 
 class Offers:
     @staticmethod
-    async def get_service_profile(session: AsyncSession, user_id: int):
-        """Возвращает профиль сервиса пользователя"""
-        return await session.get(OfferModel, user_id)
+    async def get(session: AsyncSession, user_id: int):
+        """Возвращает профиль сервиса пользователя с загруженной локацией"""
+        result = await session.execute(
+            select(OfferModel)
+            .options(joinedload(OfferModel.location))
+            .where(OfferModel.user_id == user_id)
+        )
+        return result.scalar_one_or_none()
 
     @staticmethod
     async def delete_service_profile(session: AsyncSession, user_id: int):
